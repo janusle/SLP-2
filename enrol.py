@@ -43,6 +43,7 @@ class Enrol:
 
     def __addSubjects(self, tables):
        for row in tables:
+           #error checking
            self.__subjects[row[0]] = row[1]
 
 
@@ -89,4 +90,4 @@ if __name__ == '__main__':
      print e.subjects()
      print e.subjectName("ddd")
      print e.subjectName("bbb")
-
+     print e.subjectName("dfdfdfdfd")
