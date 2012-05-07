@@ -13,7 +13,6 @@ def readlines(filename):
     return lines
 
 
-
 def readtable(filename):
     table = []
     lines = readlines(filename)
@@ -40,8 +39,43 @@ def writelines(filename, lines):
        return result
 
 
+class Enrol:
+
+    def __addSubjects(self, tables):
+       for row in tables:
+           self.__subjects[row[0]] = row[1]
+
+
+    def __init__(self, directory):
+       import os
+       self.__subjects = {}
+
+       for dirpath,_,files in os.walk( directory ):
+           for filename in files:
+               if filename.find("SUBJECTS") != -1:
+                   filename = os.path.join( dirpath, filename )
+                   tables = readtable( filename )
+                   self.__addSubjects( tables )
+
+    def subjects(self):
+        return self.__subjects.keys()
+
+
+    def subjectName(self, code):
+        return self.__subjects[code]
+
+
+    def classes(self):
+        pass
+
+    def classInfo(self):
+        pass
+
+
+
 if __name__ == '__main__':
 
+     '''
      #lines = readtable( "test.txt" )
      lines = readlines( "test.txt" )
      print lines
@@ -50,6 +84,9 @@ if __name__ == '__main__':
      lines = readtable( "test_clone.txt" )
      #lines = readlines( "test_clone.txt" )
      print lines
-
-
+     '''
+     e = Enrol('data')
+     print e.subjects()
+     print e.subjectName("ddd")
+     print e.subjectName("bbb")
 
