@@ -72,6 +72,7 @@ class Enrol:
     def _getStudents(self, class_code):
        return self._readfile( class_code + ".roll" )
 
+
     def _addStudents(self, class_code, students ):
        for student in students:
            if student not in self.__students:
@@ -95,6 +96,7 @@ class Enrol:
            else:
               pass # throw exception
 
+
     def dump(self):
         print self.__directory
         print ""
@@ -104,6 +106,8 @@ class Enrol:
         print ""
         print self.__students
         print ""
+
+
 
     def __init__(self, directory):
 
@@ -122,15 +126,6 @@ class Enrol:
        self._addClasses( tables )
 
 
-
-       for dirpath,_,files in os.walk( directory ):
-           for filename in files:
-               if filename.find("SUBJECTS") != -1:
-                   pass
-               elif filename.find("CLASSES") != -1:
-                   pass
-
-
     def subjects(self):
         return self.__subjects.keys()
 
@@ -146,6 +141,18 @@ class Enrol:
     def classInfo(self, class_code):
         return tuple(self.__classes[class_code])
 
+
+    def checkStudent(self, student_id, subject_code=None):
+        # ask error handling
+        if subject_code is None:
+           return self.__students[ student_id ]
+        else:
+
+           classes = self.classes( subject_code )
+           for klass in classes:
+               if klass in self.__students[ student_id ]:
+                  return klass
+           return None
 
 
 if __name__ == '__main__':
@@ -164,5 +171,8 @@ if __name__ == '__main__':
      #print e.subjects()
      #print e.classes("ddd")
      #print e.subjectName("dfdfdfdfd")
-     print e.classInfo( "class6" )
-     print e.classInfo( "class2" )
+     #print e.classInfo( "class6" )
+     #print e.classInfo( "class2" )
+     print e.checkStudent( "s3262302" )
+     print e.checkStudent( "s3262302", "ddd" )
+     print e.checkStudent( "s3262302", "aaa" )
