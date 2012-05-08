@@ -53,6 +53,8 @@ class Enrol:
 
 
     def _readfile( self, filename ):
+
+       filename = os.path.join( self.__directory, filename )
        try:
          lines = readlines( filename )
        except:
@@ -62,18 +64,16 @@ class Enrol:
 
 
     def _readtable( self, filename ):
-       filename = os.path.join( self._directory, filename )
+       filename = os.path.join( self.__directory, filename )
        tables = readtable( filename )
        return tables
 
 
     def _getStudents(self, class_code):
-
-       filename = os.path.join( self._directory, class_code + ".roll" )
-       return self._readfile( filename )
+       return self._readfile( class_code + ".roll" )
 
     def _addStudents(self, class_code, students ):
-       for student in studnets:
+       for student in students:
            if student not in self.__students:
                self.__students[ student ] =  [ class_code ]
            else:
@@ -91,14 +91,23 @@ class Enrol:
                students = self._getStudents( row[0] )
                self.__classes[row[0]] = [ row[1], row[2], row[3], row[4] ,\
                                           students ]
-               _addStudents( row[0], students )
+               self._addStudents( row[0], students )
            else:
               pass # throw exception
 
+    def dump(self):
+        print self.__directory
+        print ""
+        print self.__subjects
+        print ""
+        print self.__classes
+        print ""
+        print self.__students
+        print ""
 
     def __init__(self, directory):
 
-       self._directory = directory
+       self.__directory = directory
 
        self.__subjects = {} # structure { code : { name:xxx, class: [] } }
 
@@ -152,7 +161,8 @@ if __name__ == '__main__':
      print lines
      '''
      e = Enrol('data')
-     print e.subjects()
-     print e.classes("ddd")
+     #print e.subjects()
+     #print e.classes("ddd")
      #print e.subjectName("dfdfdfdfd")
      print e.classInfo( "class6" )
+     print e.classInfo( "class2" )
