@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+import os
+import sys
+
+
 def readlines(filename):
     lines = []
     with open(filename, 'r') as f:
@@ -38,11 +42,8 @@ def writelines(filename, lines):
        f.close()
        return result
 
-import os
-import sys
 
 class Enrol:
-
 
     def _addSubjects(self, tables):
        for row in tables:
@@ -97,6 +98,14 @@ class Enrol:
               pass # throw exception
 
 
+    def _addVenues( tables ):
+        for row in tables:
+            if len(row) == 2:
+              self.__venues[ row[0] ] = row[1]
+            else:
+              pass # throw exception
+
+
     def dump(self):
         print self.__directory
         print ""
@@ -106,7 +115,7 @@ class Enrol:
         print ""
         print self.__students
         print ""
-
+        print self.__venues
 
 
     def __init__(self, directory):
@@ -119,12 +128,16 @@ class Enrol:
 
        self.__students = {} # structure{ id: [ class_code ... ] }
 
+       self.__venues = {} # structure { venue_name : capacity }
+
        tables = self._readtable( "SUBJECTS" )
        self._addSubjects( tables )
 
        tables = self._readtable( "CLASSES" )
        self._addClasses( tables )
 
+       tables = self._readtable( "VENUES" )
+       self._addVenues( tables )
 
     def subjects(self):
         return self.__subjects.keys()
@@ -143,7 +156,10 @@ class Enrol:
 
 
     def checkStudent(self, student_id, subject_code=None):
-        # ask error handling
+
+        if student_id not in self.__students:
+           return None
+
         if subject_code is None:
            return self.__students[ student_id ]
         else:
@@ -153,6 +169,8 @@ class Enrol:
                if klass in self.__students[ student_id ]:
                   return klass
            return None
+
+    def enrol(self, student_id, class_code ):
 
 
 if __name__ == '__main__':
