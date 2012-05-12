@@ -52,6 +52,10 @@ class Enrol:
            else:
               pass # throw excepiton
 
+    def _writelines(filename , lines ):
+
+       return writelines(filename, lines)
+
 
     def _readfile( self, filename ):
 
@@ -164,7 +168,7 @@ class Enrol:
            return self.__students[ student_id ]
         else:
 
-           classes = self.classes( subject_code )
+           classes = self.classes( subject_code ) # no such a subject
            for klass in classes:
                if klass in self.__students[ student_id ]:
                   return klass
@@ -178,12 +182,36 @@ class Enrol:
         try{
           class = self.classInfo( class_code )
         }
-
-
         except keyError:
-          pass #throw NoSuchClass error
+          return None # No such a class
 
+        subject_code = class[0] # get subject code
+        venue = class[2] # get venue
+        cap = self.__venue[ venue ] # get capacity of venue
+        enroled_num = len(class[4])
 
+        if int(cap) - enroled_num  == 0:
+            return None  #the class is full
+
+        klass_code = checkStudent( student_id, subject_code )
+        if klass_code is not None:
+            self.__classes[ klass_code ][4].remove( student_id ) #remove stu_id from classes dict
+            self.__students[ student_id ].remove( klass_code ) #remove class code from student dict
+
+        self.__students[ student_id ].append( class_code )
+        self.__classes[ class_code ][4].append( student_id )
+
+        filename = str(class_code) + ".roll"
+        students = self.__classes[ class_code ][4]
+        result = self._writelines( filename, students )
+        if result == 0: #error occur
+           #remove the record just added
+           self.__students[ student_id ].remove( class_code )
+           self.__classes[ class_code ][4].remove( student_id )
+           return None
+
+        # All done
+        return 1
 
 if __name__ == '__main__':
 
