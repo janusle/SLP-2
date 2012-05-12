@@ -172,6 +172,18 @@ class Enrol:
 
     def enrol(self, student_id, class_code ):
 
+        if student_id not in self.__students:
+           self.__students[student_id] = []
+
+        try{
+          class = self.classInfo( class_code )
+        }
+
+
+        except keyError:
+          pass #throw NoSuchClass error
+
+
 
 if __name__ == '__main__':
 
