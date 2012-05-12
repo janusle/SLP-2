@@ -179,11 +179,7 @@ class Enrol:
         if student_id not in self.__students:
            self.__students[student_id] = []
 
-        try{
-          class = self.classInfo( class_code )
-        }
-        except keyError:
-          return None # No such a class
+        class = self.classInfo( class_code ) # may raise KeyError
 
         subject_code = class[0] # get subject code
         venue = class[2] # get venue
