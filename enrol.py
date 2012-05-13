@@ -102,7 +102,7 @@ class Enrol:
               pass # throw exception
 
 
-    def _addVenues( tables ):
+    def _addVenues( self, tables ):
         for row in tables:
             if len(row) == 2:
               self.__venues[ row[0] ] = row[1]
@@ -179,12 +179,12 @@ class Enrol:
         if student_id not in self.__students:
            self.__students[student_id] = []
 
-        class = self.classInfo( class_code ) # may raise KeyError
+        klass = self.classInfo( class_code ) # may raise KeyError
 
-        subject_code = class[0] # get subject code
-        venue = class[2] # get venue
+        subject_code = klass[0] # get subject code
+        venue = klass[2] # get venue
         cap = self.__venue[ venue ] # get capacity of venue
-        enroled_num = len(class[4])
+        enroled_num = len(klass[4])
 
         if int(cap) - enroled_num  == 0:
             return None  #the class is full
