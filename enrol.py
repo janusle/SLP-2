@@ -36,10 +36,10 @@ def writelines(filename, lines):
        f = open(filename, "w")
        for line in lines:
            f.write(line + "\n")
+       f.close()
     except:
        result = 0
     finally:
-       f.close()
        return result
 
 
@@ -69,6 +69,7 @@ class Enrol:
 
 
     def _readtable( self, filename ):
+
        filename = os.path.join( self.__directory, filename )
        tables = readtable( filename )
        return tables
@@ -79,6 +80,7 @@ class Enrol:
 
 
     def _addStudents(self, class_code, students ):
+
        for student in students:
            if student not in self.__students:
                self.__students[ student ] =  [ class_code ]
@@ -88,8 +90,11 @@ class Enrol:
 
 
     def _addClasses(self, tables):
+
        for row in tables:
-           if len(row) == 5:
+           if len(row) == 5 and\
+              row[1] in self.__subjects: # row[1] is subject code, check if subject code is existed
+
                if row[0] not in self.__subjects[row[1]]["class"]:#avoid duplicated item
                   self.__subjects[row[1]]["class"].append( row[0] )
 
@@ -98,16 +103,14 @@ class Enrol:
                self.__classes[row[0]] = [ row[1], row[2], row[3], row[4] ,\
                                           students ]
                self._addStudents( row[0], students )
-           else:
-              pass # throw exception
 
 
     def _addVenues( self, tables ):
+
         for row in tables:
             if len(row) == 2:
               self.__venues[ row[0] ] = row[1]
-            else:
-              pass # throw exception
+
 
 
     def dump(self):
