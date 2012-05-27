@@ -6,15 +6,14 @@ import sys
 
 def readlines(filename):
     lines = []
-    f = open(filename, 'r')
+    with open(filename, 'r') as f:
 
-    for line in f:
+      for line in f:
 
         line = line.rstrip("\n").strip()
         if len(line) != 0 and line[0] != '#':
             lines.append(line)
 
-    f.close()
     return lines
 
 
