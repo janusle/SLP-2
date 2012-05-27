@@ -53,8 +53,7 @@ class Enrol:
            else:
               pass # throw excepiton
 
-    def _writelines(filename , lines ):
-
+    def _writelines(self,filename , lines ):
        return writelines(filename, lines)
 
 
@@ -185,26 +184,33 @@ class Enrol:
            self.__students[student_id] = []
 
         klass = self.classInfo( class_code ) # may raise KeyError
-
         subject_code = klass[0] # get subject code
         venue = klass[2] # get venue
-        cap = self.__venue[ venue ] # get capacity of venue
+        cap = self.__venues[ venue ] # get capacity of venue
         enroled_num = len(klass[4])
 
         if int(cap) - enroled_num  == 0:
             return None  #the class is full
 
-        klass_code = checkStudent( student_id, subject_code )
-        if klass_code is not None:
+        klass_code = self.checkStudent( student_id, subject_code )
+        if klass_code is not None: # if student enroled before, delete previous enrollment
             self.__classes[ klass_code ][4].remove( student_id ) #remove stu_id from classes dict
             self.__students[ student_id ].remove( klass_code ) #remove class code from student dict
 
         self.__students[ student_id ].append( class_code )
         self.__classes[ class_code ][4].append( student_id )
 
-        filename = str(class_code) + ".roll"
+        import os
+        # write new enrol to file
+        filename = os.path.join(self.__directory, str(class_code) + ".roll")
         students = self.__classes[ class_code ][4]
         result = self._writelines( filename, students )
+        # overwrite class file which student enroled before
+        if klass_code is not None:
+           filename = os.path.join(self.__directory, str(klass_code) + ".roll")
+           students = self.__classes[ klass_code ][4]
+           result = self._writelines( filename, students )
+
         if result == 0: #error occur
            #remove the record just added
            self.__students[ student_id ].remove( class_code )

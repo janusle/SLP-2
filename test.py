@@ -157,6 +157,52 @@ class TestEnrolClass(unittest.TestCase):
         self.assertRaises(KeyError, self.e.checkStudent, "s1","a77" )
 
 
+    def test_enrol(self):
+        # normal test
+        result = self.e.enrol("s1", "class10")
+        self.assertEqual( result, 1 )
+        result = self.e.checkStudent("s1", "a4")
+        self.assertEqual( result, "class10")
+        self.e = Enrol("testData")
+        result = self.e.checkStudent("s1","a4")
+        self.assertEqual( result, "class10")
+
+        # test changing class
+        result = self.e.enrol("s1", "class6")
+        self.assertEqual( result, 1)
+        result = self.e.checkStudent("s1","a4")
+        self.assertEqual( result, "class6")
+        self.e = Enrol("testData")
+        result = self.e.checkStudent("s1","a4")
+        self.assertEqual( result, "class6")
+
+        # test over capacity
+        result = self.e.enrol("s0", "class6")
+        self.assertEqual( result, None)
+
+        # test new student
+        result = self.e.enrol("s100", "class10")
+        self.assertEqual( result, 1 )
+        result = self.e.checkStudent("s100", "a4")
+        self.assertEqual( result, "class10" )
+        self.e = Enrol("testData")
+        result = self.e.checkStudent("s100","a4")
+        self.assertEqual( result, "class10")
+
+        # test class which is not existed
+        self.assertRaises(KeyError, self.e.enrol, "s0", "NoSuchClass")
+
+    def tearDown(self):
+
+        # delete testing data
+        import os
+        try:
+          os.remove("testData/class6.roll")
+          os.remove("testData/class10.roll")
+        except:
+          pass
+
+
 if __name__ == '__main__':
 
     from enrol import Enrol
