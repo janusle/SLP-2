@@ -6,7 +6,6 @@ Student number: 3262302
 '''
 
 import os
-import sys
 
 
 def readlines(filename):
@@ -335,7 +334,6 @@ class Enrol:
         self.__students[ student_id ].append( class_code )
         self.__classes[ class_code ][4].append( student_id )
 
-        import os
         # write new enrol to file
         filename = os.path.join(self.__directory, str(class_code) + ".roll")
         students = self.__classes[ class_code ][4]
