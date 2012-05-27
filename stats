@@ -61,19 +61,29 @@ def getStudentId(argv):
 # program starts here
 
 directory = getDataDir() #read directory name of data
-e = enrol.Enrol(directory)
+
+try:
+  e = enrol.Enrol(directory)
+except IOError, e:
+  sys.stderr.write("stats: Failed to load data.\n")
+  sys.stderr.write(str(e) + "\n")
+  sys.exit(-1) 
+
 
 if len( sys.argv ) == 1: # no argument
 
    # **list comprehension**
    # get list of subjects contains code of subject, name of subject
    # number of classes, number of students
-   subjects = [ ( subject, e.subjectName(subject), len(e.classes(subject)),\
+   try:
+     subjects = [ ( subject, e.subjectName(subject), len(e.classes(subject)),\
                 sum( [ len(e.classInfo(c)[4]) for c in e.classes(subject) ] ))\
                 for subject in e.subjects() ]
-
-   print "Subjects are:"
-   for subject in subjects:
+   except:
+     sys.stderr.write("stats: Data file(s) may be not valid, please check them.\n")
+   else:
+     print "Subjects are:"
+     for subject in subjects:
        print "%s\t%s\tclasses: %d\tstudents: %d" % subject
 
 
@@ -82,16 +92,20 @@ else:
    classes = e.checkStudent( student_id ) 
 
    if len(classes) != 0 :
+
        # **list comprehension**
        # get list of subject the student enroled 
        # which contains subject code, subject name, location of class,
        # time of class
-       subjects = [ (e.classInfo(klass)[0], e.subjectName( e.classInfo(klass)[0] ), \
+       try:
+         subjects = [ (e.classInfo(klass)[0], e.subjectName( e.classInfo(klass)[0] ), \
                      e.classInfo(klass)[1], e.classInfo(klass)[2] ) \
                      for klass in classes ]
-
-       for subject in subjects:
-          print "%s\t%s\t%s @ %s" % subject
+       except:
+         sys.stderr.write("stats: Data file(s) may be not valid, please check them.\n")
+       else:
+         for subject in subjects:
+            print "%s\t%s\t%s @ %s" % subject
 
    else: # The student didn't enrol any class
        print "The student didn't enrol any class"
