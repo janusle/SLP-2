@@ -1,4 +1,8 @@
 #!/usr/bin/env python2.6
+'''
+Unit test for enrol.py
+Just run it
+'''
 import unittest
 
 class TestReadlinesFunctions(unittest.TestCase):
