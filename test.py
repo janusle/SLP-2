@@ -38,8 +38,10 @@ class TestWritelinesFunctions(unittest.TestCase):
         result = writelines("NoSuchDirectory/write_data", ["aaaa"])
         self.assertEqual(result,0)
 
+        '''
         result = writelines("testData/test_permission", ["aaaa"])
         self.assertEqual(result,0)
+        '''
 
     def tearDown(self):
         import os
@@ -99,6 +101,60 @@ class TestEnrolClass(unittest.TestCase):
           self.assertTrue( klass in sample)
 
         self.assertRaises(KeyError, self.e.classes, "nosuchsubject")
+
+
+    def test_classInfo(self):
+        result = self.e.classInfo("class9")
+        sample = ("a0", "Wed", "3.5.11", "Hi", [] )
+        self.assertEqual( result, sample )
+
+        result = self.e.classInfo("class3")
+        sample = ("a1", "Tue", "3.3.3", "Janus", ["s1","s2","s3"] )
+        self.assertEqual( result, sample )
+
+
+        result = self.e.classInfo("class4")
+        sample = ("a2", "Mon", "3.5555.10", "Null", ["s0","s1","s2","s4","s5"] )
+        self.assertEqual( result, sample )
+
+        self.assertRaises(KeyError, self.e.classInfo, "nosuchclass")
+
+
+    def test_checkStudent(self):
+
+        # without specifying subject code
+        result = self.e.checkStudent("s2")
+        sample = [ "class3", "class4" ]
+        self.assertEqual(len(result), len(sample))
+        for klass in sample:
+            self.assertTrue( klass in result )
+
+        result = self.e.checkStudent("s0")
+        sample = [ "class4" ]
+        self.assertEqual(len(result), len(sample))
+        for klass in sample:
+            self.assertTrue( klass in result )
+        # test student id which is not existed
+        result = self.e.checkStudent("s10")
+        sample = []
+        self.assertEqual( result, sample )
+
+        # with specifying subject code
+
+        result = self.e.checkStudent("s1","a2")
+        sample = "class4"
+        self.assertEqual( result, sample )
+
+        result = self.e.checkStudent("s2", "a1")
+        sample = "class3"
+        self.assertEqual( result, sample )
+
+        # test a subject in which student isn't enrolled
+        result = self.e.checkStudent("s1","a3")
+        self.assertEqual( result, None )
+
+        # test a subject which is not existed
+        self.assertRaises(KeyError, self.e.checkStudent, "s1","a77" )
 
 
 if __name__ == '__main__':

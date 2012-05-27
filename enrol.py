@@ -164,8 +164,8 @@ class Enrol:
 
     def checkStudent(self, student_id, subject_code=None):
 
-        if student_id not in self.__students:
-           return None
+        if subject_code is None and student_id not in self.__students:
+           return []
 
         if subject_code is None:
            return self.__students[ student_id ]
