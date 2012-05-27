@@ -93,5 +93,5 @@ else:
        for subject in subjects:
           print "%s\t%s\t%s @ %s" % subject
 
-   else:
+   else: # The student didn't enrol any class
        print "The student didn't enrol any class"
