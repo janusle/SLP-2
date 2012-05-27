@@ -40,8 +40,8 @@ def writelines(filename, lines):
        f.close()
     except:
        result = 0
-    finally:
-       return result
+
+    return result
 
 
 class Enrol:
