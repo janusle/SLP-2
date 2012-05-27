@@ -6,14 +6,15 @@ import sys
 
 def readlines(filename):
     lines = []
-    with open(filename, 'r') as f:
+    f = open(filename, 'r')
 
-       for line in f:
+    for line in f:
 
-          line = line.rstrip("\n").strip()
-          if len(line) != 0 and line[0] != '#':
-              lines.append(line)
+        line = line.rstrip("\n").strip()
+        if len(line) != 0 and line[0] != '#':
+            lines.append(line)
 
+    f.close()
     return lines
 
 
@@ -166,6 +167,7 @@ class Enrol:
 
         if subject_code is None and student_id not in self.__students:
            return []
+
 
         if subject_code is None:
            return self.__students[ student_id ]
