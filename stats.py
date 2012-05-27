@@ -29,7 +29,7 @@ def getStudentId(argv):
 
    try:
           optlist, args = getopt.getopt( sys.argv[1:], "", ["student="] )
-   except getopt.GetoptError as err:
+   except getopt.GetoptError ,err:
           sys.stderr.write(str(err) + "\n")
           usage()
           sys.exit(-1)

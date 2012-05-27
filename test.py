@@ -202,7 +202,6 @@ class TestEnrolClass(unittest.TestCase):
         except:
           pass
 
-
 if __name__ == '__main__':
 
     from enrol import Enrol
