@@ -63,7 +63,7 @@ else:
    student_id = getStudentId( sys.argv[1:] )
    classes = e.checkStudent( student_id )
 
-   if classes is not None:
+   if len(classes) != 0 :
        subjects = [ (e.classInfo(klass)[0], e.subjectName( e.classInfo(klass)[0] ), \
                      e.classInfo(klass)[1], e.classInfo(klass)[2] ) \
                      for klass in classes ]
